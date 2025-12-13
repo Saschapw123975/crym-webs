@@ -7,7 +7,6 @@ class AdvancedAnimationSystem {
         this.explosions = [];
         this.morphingShapes = [];
         this.parallaxLayers = [];
-        this.lightningEffects = [];
         this.magneticElements = [];
         this.init();
     }
@@ -18,7 +17,6 @@ class AdvancedAnimationSystem {
         this.initMouseTrail();
         this.initParallaxBackground();
         this.initMagneticEffect();
-        this.initLightningEffect();
         this.initMorphingShapes();
         this.initTextAnimations();
         this.initButtonAnimations();
@@ -167,46 +165,6 @@ class AdvancedAnimationSystem {
         });
     }
 
-    // Lightning effect on click
-    initLightningEffect() {
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('button, input, a')) return;
-            
-            const branches = 5 + Math.floor(Math.random() * 5);
-            for (let i = 0; i < branches; i++) {
-                this.lightningEffects.push({
-                    start: { x: e.clientX, y: e.clientY },
-                    end: {
-                        x: e.clientX + (Math.random() - 0.5) * 200,
-                        y: e.clientY + (Math.random() - 0.5) * 200
-                    },
-                    life: 1,
-                    segments: this.generateLightningPath(
-                        { x: e.clientX, y: e.clientY },
-                        {
-                            x: e.clientX + (Math.random() - 0.5) * 200,
-                            y: e.clientY + (Math.random() - 0.5) * 200
-                        }
-                    )
-                });
-            }
-        });
-    }
-
-    generateLightningPath(start, end) {
-        const segments = [];
-        const steps = 10;
-        
-        for (let i = 0; i <= steps; i++) {
-            const t = i / steps;
-            segments.push({
-                x: start.x + (end.x - start.x) * t + (Math.random() - 0.5) * 20,
-                y: start.y + (end.y - start.y) * t + (Math.random() - 0.5) * 20
-            });
-        }
-        
-        return segments;
-    }
 
     // Morphing geometric shapes
     initMorphingShapes() {
@@ -424,7 +382,6 @@ class AdvancedAnimationSystem {
             this.updateFloatingElements();
             this.updateMouseTrail();
             this.updateParallaxLayers();
-            this.updateLightningEffects();
             this.updateMorphingShapes();
             this.updateExplosions();
             
@@ -536,31 +493,6 @@ class AdvancedAnimationSystem {
         });
     }
 
-    updateLightningEffects() {
-        this.lightningEffects.forEach(lightning => {
-            lightning.life -= 0.05;
-            
-            if (lightning.life > 0) {
-                this.fgCtx.strokeStyle = `rgba(255, 255, 255, ${lightning.life})`;
-                this.fgCtx.lineWidth = 2 * lightning.life;
-                this.fgCtx.shadowBlur = 20;
-                this.fgCtx.shadowColor = 'rgba(61, 115, 255, 0.8)';
-                
-                this.fgCtx.beginPath();
-                lightning.segments.forEach((point, index) => {
-                    if (index === 0) {
-                        this.fgCtx.moveTo(point.x, point.y);
-                    } else {
-                        this.fgCtx.lineTo(point.x, point.y);
-                    }
-                });
-                this.fgCtx.stroke();
-                this.fgCtx.shadowBlur = 0;
-            }
-        });
-        
-        this.lightningEffects = this.lightningEffects.filter(l => l.life > 0);
-    }
 
     updateMorphingShapes() {
         this.morphingShapes.forEach(shape => {
