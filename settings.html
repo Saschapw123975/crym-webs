@@ -47,31 +47,6 @@
       --card-shadow: 0 20px 60px rgba(37,99,235,0.3);
     }
     
-    /* Purple theme variables */
-    [data-theme="purple"] {
-      --bg: #1a0e2e;
-      --sidebar: #2d1b4e;
-      --main: #241640;
-      --text-main: #f3e8ff;
-      --muted: #b794f4;
-      --accent: #9333ea;
-      --accent-2: #c084fc;
-      --border: #4c3575;
-      --card-shadow: 0 20px 60px rgba(147,51,234,0.3);
-    }
-    
-    /* Green theme variables */
-    [data-theme="green"] {
-      --bg: #0a1f0a;
-      --sidebar: #1a3a1a;
-      --main: #0f2f0f;
-      --text-main: #e8ffe8;
-      --muted: #86efac;
-      --accent: #22c55e;
-      --accent-2: #4ade80;
-      --border: #2a5a2a;
-      --card-shadow: 0 20px 60px rgba(34,197,94,0.3);
-    }
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -373,79 +348,10 @@
             <p class="setting-description">Choose your preferred color theme</p>
           </div>
           <select id="theme-select" class="setting-control">
-            <option value="light">Light Mode</option>
-            <option value="dark">Dark Mode</option>
+            <option value="light">White Theme</option>
+            <option value="dark">Dark Theme</option>
             <option value="blue">Blue Theme</option>
-            <option value="purple">Purple Theme</option>
-            <option value="green">Green Theme</option>
           </select>
-        </div>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="font-family">Font Family</label>
-            <p class="setting-description">Choose your preferred font</p>
-          </div>
-          <select id="font-family" class="setting-control">
-            <option value="Manrope">Manrope (Default)</option>
-            <option value="Inter">Inter</option>
-            <option value="Roboto">Roboto</option>
-            <option value="Poppins">Poppins</option>
-            <option value="Open Sans">Open Sans</option>
-            <option value="Montserrat">Montserrat</option>
-            <option value="system-ui">System Font</option>
-          </select>
-        </div>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="font-size">Font Size</label>
-            <p class="setting-description">Adjust text size (12-20px)</p>
-          </div>
-          <input type="range" id="font-size" class="setting-control" min="12" max="20" value="14">
-          <span id="font-size-value" style="margin-left: 10px;">14px</span>
-        </div>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="animations-toggle">Animations</label>
-            <p class="setting-description">Enable interface animations</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="animations-toggle" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="particles-toggle">Particle Effects</label>
-            <p class="setting-description">Enable background particle animations</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="particles-toggle" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="blur-effects">Blur Effects</label>
-            <p class="setting-description">Enable glassmorphism blur effects</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="blur-effects" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="animation-speed">Animation Speed</label>
-            <p class="setting-description">Control animation playback speed</p>
-          </div>
-          <input type="range" id="animation-speed" class="setting-control" min="0.5" max="2" step="0.1" value="1">
-          <span id="speed-value" style="margin-left: 10px;">1.0x</span>
         </div>
       </div>
       
@@ -461,48 +367,6 @@
             <input type="checkbox" id="auto-login">
             <span class="toggle-slider"></span>
           </label>
-        </div>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="auto-cleanup">Auto Cleanup</label>
-            <p class="setting-description">Automatically clean temporary files</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="auto-cleanup" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="hardware-tracking">Hardware Tracking</label>
-            <p class="setting-description">Monitor hardware changes and performance</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="hardware-tracking" checked>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="cleanup-interval">Cleanup Interval</label>
-            <p class="setting-description">Minutes between automatic cleanups</p>
-          </div>
-          <input type="number" id="cleanup-interval" class="setting-control" value="30" min="5" max="120">
-        </div>
-      </div>
-      
-      <div class="settings-section">
-        <h2>Network</h2>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="timeout">Connection Timeout</label>
-            <p class="setting-description">Network request timeout in seconds</p>
-          </div>
-          <input type="number" id="timeout" class="setting-control" value="30" min="5" max="120">
         </div>
       </div>
       
@@ -634,22 +498,13 @@
       // Load saved settings
       function loadSettings() {
         const savedTheme = localStorage.getItem('crymson_theme') || 'light';
-        const savedAnimations = localStorage.getItem('crymson_animations') !== 'false';
         const savedAutoLogin = localStorage.getItem('crymson_auto_login') === 'true';
-        const savedTimeout = localStorage.getItem('crymson_timeout') || '30';
         
         document.getElementById('theme-select').value = savedTheme;
-        document.getElementById('animations-toggle').checked = savedAnimations;
         document.getElementById('auto-login').checked = savedAutoLogin;
-        document.getElementById('timeout').value = savedTimeout;
         
         // Apply theme
         applyTheme(savedTheme);
-        
-        // Apply animations setting
-        if (!savedAnimations) {
-          document.body.style.setProperty('--animation-duration', '0.001ms');
-        }
       }
       
       // Apply theme to all pages
@@ -661,14 +516,10 @@
       // Save settings
       function saveSettings() {
         const theme = document.getElementById('theme-select').value;
-        const animations = document.getElementById('animations-toggle').checked;
         const autoLogin = document.getElementById('auto-login').checked;
-        const timeout = document.getElementById('timeout').value;
         
         localStorage.setItem('crymson_theme', theme);
-        localStorage.setItem('crymson_animations', animations);
         localStorage.setItem('crymson_auto_login', autoLogin);
-        localStorage.setItem('crymson_timeout', timeout);
         
         applyTheme(theme);
         
@@ -699,9 +550,7 @@
       function resetSettings() {
         if (confirm('Are you sure you want to reset all settings to default?')) {
           localStorage.removeItem('crymson_theme');
-          localStorage.removeItem('crymson_animations');
           localStorage.removeItem('crymson_auto_login');
-          localStorage.removeItem('crymson_timeout');
           localStorage.removeItem('crymson_username');
           localStorage.removeItem('crymson_password');
           
