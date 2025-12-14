@@ -1,0 +1,127 @@
+/* Theme CSS Variables */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #ffffff;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-muted: #adb5bd;
+    --border-color: #dee2e6;
+    --accent-color: #007bff;
+    --accent-hover: #0056b3;
+    --button-bg: #007bff;
+    --button-hover: #0056b3;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --warning-color: #ffc107;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --gradient-start: #ffffff;
+    --gradient-end: #f8f9fa;
+}
+
+/* Dark Theme */
+.dark-theme {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #2d2d30;
+    --bg-tertiary: #252526;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #969696;
+    --border-color: #3e3e42;
+    --accent-color: #007acc;
+    --accent-hover: #1ba1e2;
+    --button-bg: #0e639c;
+    --button-hover: #1177bb;
+    --card-bg: #2d2d30;
+    --input-bg: #3c3c3c;
+    --success-color: #4ec9b0;
+    --error-color: #f44747;
+    --warning-color: #ce9178;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --gradient-start: #2d2d30;
+    --gradient-end: #252526;
+}
+
+/* Apply theme variables to common elements */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow);
+}
+
+.btn-primary {
+    background-color: var(--button-bg);
+    border-color: var(--button-bg);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
+}
+
+.form-control {
+    background-color: var(--input-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.border {
+    border-color: var(--border-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--bg-secondary) !important;
+}
+
+/* Scrollbar styling for dark theme */
+.dark-theme ::-webkit-scrollbar {
+    width: 12px;
+}
+
+.dark-theme ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.dark-theme ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 6px;
+}
+
+.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Light theme scrollbar */
+.light-theme ::-webkit-scrollbar {
+    width: 12px;
+}
+
+.light-theme ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.light-theme ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 6px;
+}
+
+.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
