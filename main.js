@@ -246,10 +246,39 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
+    // Close modal first
+    closeCreateAccount();
+    
+    // Send to C# backend
     if (window.chrome && window.chrome.webview) {
-      window.chrome.webview.postMessage(`CREATE_ACCOUNT:${licenseKey}:${username}:${email}:${password}`);
+      window.chrome.webview.postMessage(JSON.stringify({ type: 'CREATE_ACCOUNT', licenseKey, username, email, password }));
     } else {
-      alert(`Creating account with license key: ${licenseKey}`);
+      // Fallback for testing
+      console.log(`Creating account with license key: ${licenseKey}`);
+      alert(`Account creation request sent for: ${username}`);
+    }
+  };
+
+  // Account creation feedback functions
+  window.showAccountCreationLoading = function() {
+    const createBtn = document.getElementById('create-btn');
+    if (createBtn) {
+      createBtn.textContent = 'Creating Account...';
+      createBtn.disabled = true;
+    }
+  };
+  
+  window.showAccountCreationSuccess = function(message) {
+    alert(message);
+    closeCreateAccount();
+  };
+  
+  window.showAccountCreationError = function(message) {
+    alert('Error: ' + message);
+    const createBtn = document.getElementById('create-btn');
+    if (createBtn) {
+      createBtn.textContent = 'Create Account';
+      createBtn.disabled = false;
     }
   };
 
@@ -403,62 +432,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const userField = document.querySelector('#user');
   const passField = document.querySelector('#pass');
   const rememberCheckbox = document.querySelector('#remember-me');
-  
-  // Auto login functionality
-  function attemptAutoLogin() {
-    const autoLoginEnabled = localStorage.getItem('crymson_auto_login') === 'true';
-    const savedUsername = localStorage.getItem('crymson_username');
-    const savedPassword = localStorage.getItem('crymson_password');
-    
-    if (autoLoginEnabled && savedUsername && savedPassword) {
-      // Fill in the saved credentials
-      if (userField) userField.value = savedUsername;
-      if (passField) passField.value = savedPassword;
-      if (rememberCheckbox) rememberCheckbox.checked = true;
-      
-      // Auto login after a short delay
-      setTimeout(() => {
-        if (primaryBtn) primaryBtn.click();
-      }, 500);
+
+  function postJsonMessage(payload) {
+    try {
+      if (window.chrome && window.chrome.webview) {
+        window.chrome.webview.postMessage(JSON.stringify(payload));
+      }
+    } catch (e) {
+      console.log('postMessage failed', e);
     }
   }
-  
-  // Check for auto login on page load
+
   if (primaryBtn && userField && passField) {
-    // Set checkbox state based on saved setting
-    if (rememberCheckbox) {
-      rememberCheckbox.checked = localStorage.getItem('crymson_auto_login') === 'true';
-    }
-    
-    attemptAutoLogin();
-    
     primaryBtn.addEventListener('click', (e) => {
       e.preventDefault();
       const user = userField.value.trim();
       const pass = passField.value;
-      const autoLoginEnabled = rememberCheckbox ? rememberCheckbox.checked : false;
       if (user && pass) {
         // Show loading animation
         if (window.crymsonAnimations) {
           window.crymsonAnimations.showLoadingSpinner();
         }
-        
-        // Update auto login setting based on checkbox
-        const autoLoginEnabled = rememberCheckbox ? rememberCheckbox.checked : false;
-        localStorage.setItem('crymson_auto_login', autoLoginEnabled);
-        
-        // Save credentials if auto login is enabled
-        if (autoLoginEnabled) {
-          localStorage.setItem('crymson_username', user);
-          localStorage.setItem('crymson_password', pass);
-        } else {
-          // Clear saved credentials if auto login is disabled
-          localStorage.removeItem('crymson_username');
-          localStorage.removeItem('crymson_password');
-        }
-        
-        // Send login request to C# backend with remember-me flag
-        window.chrome.webview.postMessage(`LOGIN:${user}:${pass}:${autoLoginEnabled}`);
+
+        const rememberMe = rememberCheckbox ? rememberCheckbox.checked : false;
+        postJsonMessage({ type: 'LOGIN', username: user, password: pass, rememberMe });
       } else {
         // Shake animation for invalid input
         if (window.crymsonAnimations) {

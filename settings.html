@@ -357,22 +357,12 @@
       
       <div class="settings-section">
         <h2>Application</h2>
-        
-        <div class="setting-item">
-          <div class="setting-info">
-            <label for="auto-login">Auto Login</label>
-            <p class="setting-description">Remember login credentials</p>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" id="auto-login">
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
       </div>
       
       <div class="settings-actions">
         <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
         <button class="btn" onclick="resetSettings()">Reset to Default</button>
+        <button class="btn" onclick="try{ window.chrome?.webview?.postMessage(JSON.stringify({ type: 'CLEAR_SAVED_CREDENTIALS' })); }catch(e){}">Clear Saved Credentials</button>
       </div>
     </main>
     
@@ -498,10 +488,8 @@
       // Load saved settings
       function loadSettings() {
         const savedTheme = localStorage.getItem('crymson_theme') || 'light';
-        const savedAutoLogin = localStorage.getItem('crymson_auto_login') === 'true';
         
         document.getElementById('theme-select').value = savedTheme;
-        document.getElementById('auto-login').checked = savedAutoLogin;
         
         // Apply theme
         applyTheme(savedTheme);
@@ -516,10 +504,8 @@
       // Save settings
       function saveSettings() {
         const theme = document.getElementById('theme-select').value;
-        const autoLogin = document.getElementById('auto-login').checked;
         
         localStorage.setItem('crymson_theme', theme);
-        localStorage.setItem('crymson_auto_login', autoLogin);
         
         applyTheme(theme);
         
@@ -550,7 +536,6 @@
       function resetSettings() {
         if (confirm('Are you sure you want to reset all settings to default?')) {
           localStorage.removeItem('crymson_theme');
-          localStorage.removeItem('crymson_auto_login');
           localStorage.removeItem('crymson_username');
           localStorage.removeItem('crymson_password');
           
