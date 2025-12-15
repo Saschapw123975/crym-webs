@@ -347,10 +347,10 @@
             <label for="theme-select">Theme</label>
             <p class="setting-description">Choose your preferred color theme</p>
           </div>
-          <select id="theme-select" class="setting-control">
-            <option value="light">White Theme</option>
-            <option value="dark">Dark Theme</option>
-            <option value="blue">Blue Theme</option>
+          <select id="theme-select" class="setting-control" onchange="window.toggleTheme(); updateThemeSelect();">
+            <option value="auto">Auto (System)</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
           </select>
         </div>
       </div>
@@ -362,7 +362,7 @@
       <div class="settings-actions">
         <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
         <button class="btn" onclick="resetSettings()">Reset to Default</button>
-        <button class="btn" onclick="try{ window.chrome?.webview?.postMessage(JSON.stringify({ type: 'CLEAR_SAVED_CREDENTIALS' })); }catch(e){}">Clear Saved Credentials</button>
+        <button class="btn" onclick="try{ window.chrome?.webview?.postMessage(JSON.stringify({ type: 'CLEAR_SAVED_CREDENTIALS' })); }catch(e){} try{ window.chrome?.webview?.postMessage(JSON.stringify({ type: 'CLEAR_VALIDATOR_REGISTRY' })); }catch(e){}">Clear Saved Credentials</button>
       </div>
     </main>
     

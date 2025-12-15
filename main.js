@@ -1,13 +1,80 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Apply saved theme immediately
-  const savedTheme = localStorage.getItem('crymson_theme') || 'light';
+  // Auto-detect system theme preference
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  // Apply saved theme or auto-detect system preference
+  const savedTheme = localStorage.getItem('crymson_theme') || (systemPrefersDark ? 'dark' : 'light');
+  
+  // Apply theme to document
+  if (savedTheme === 'dark') {
+    document.documentElement.classList.add('dark-theme');
+  } else {
+    document.documentElement.classList.remove('dark-theme');
+  }
   document.documentElement.setAttribute('data-theme', savedTheme);
+  
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    // Only auto-change if user hasn't manually set a preference
+    if (!localStorage.getItem('crymson_theme_manual')) {
+      const newTheme = e.matches ? 'dark' : 'light';
+      
+      if (newTheme === 'dark') {
+        document.documentElement.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+      }
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('crymson_theme', newTheme);
+    }
+  });
   
   // Check if activity tracking is enabled
   const activityTrackingEnabled = localStorage.getItem('crymson_activity_tracking') !== 'false';
   
   const shell = document.querySelector('.shell');
   if (!shell) return;
+
+  // Theme toggle functionality
+  window.toggleTheme = function() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark-theme');
+    } else {
+      document.documentElement.classList.remove('dark-theme');
+    }
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('crymson_theme', newTheme);
+    localStorage.setItem('crymson_theme_manual', 'true');
+    
+    // Update theme toggle button if it exists
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+      themeToggle.innerHTML = newTheme === 'dark' ? '🌙' : '☀️';
+      themeToggle.title = newTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+    }
+    
+    // Track theme change
+    if (activityTrackingEnabled) {
+      activityTracker.addActivity('click', `Theme changed to ${newTheme}`, 'Theme toggle');
+    }
+  };
+
+  // Add theme toggle button to all pages
+  const themeToggle = document.createElement('button');
+  themeToggle.className = 'theme-toggle';
+  themeToggle.innerHTML = savedTheme === 'dark' ? '🌙' : '☀️';
+  themeToggle.title = savedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+  themeToggle.onclick = window.toggleTheme;
+  
+  // Add theme toggle to header or navigation
+  const header = document.querySelector('header') || document.querySelector('.shell-header') || document.querySelector('.nav') || document.body;
+  if (header) {
+    header.appendChild(themeToggle);
+  }
 
 
   // Login functionality tracking system (only if enabled)

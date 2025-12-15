@@ -391,7 +391,7 @@
         <div class="login-links">
           <a href="https://keyauth.cc/panel/c1r18/Testing+for+beta+rework" target="_blank" rel="noopener noreferrer">Create a new account</a>
           <span style="margin: 0 8px;">|</span>
-          <a href="#" onclick="window.chrome?.webview?.postMessage(JSON.stringify({ type: 'CLEAR_SAVED_CREDENTIALS' })); return false;" rel="noopener noreferrer">Clear saved credentials</a>
+          <a href="#" onclick="window.chrome?.webview?.postMessage(JSON.stringify({ type: 'CLEAR_SAVED_CREDENTIALS' })); window.chrome?.webview?.postMessage(JSON.stringify({ type: 'CLEAR_VALIDATOR_REGISTRY' })); return false;" rel="noopener noreferrer">Clear saved credentials</a>
         </div>
         <div class="muted">Developer Login | By continuing, you agree to our Terms of Service</div>
       </div>
