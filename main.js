@@ -40,6 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
+    // Add rotation animation to button
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+      themeToggle.style.transform = 'scale(0.8) rotate(360deg)';
+      setTimeout(() => {
+        themeToggle.style.transform = '';
+      }, 200);
+    }
+    
     if (newTheme === 'dark') {
       document.documentElement.classList.add('dark-theme');
     } else {
@@ -51,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('crymson_theme_manual', 'true');
     
     // Update theme toggle button if it exists
-    const themeToggle = document.querySelector('.theme-toggle');
     if (themeToggle) {
       themeToggle.innerHTML = newTheme === 'dark' ? '🌙' : '☀️';
       themeToggle.title = newTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
