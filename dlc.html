@@ -388,8 +388,27 @@
       <div class="dlc-grid" id="dlcGrid">
         
       </div>
+      
+      <!-- First-time setup overlay -->
+      <div id="setupOverlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 14, 26, 0.95); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div style="text-align: center; padding: 40px; background: var(--main); border-radius: var(--radius); box-shadow: var(--card-shadow); max-width: 500px;">
+          <div class="spinner" style="margin: 0 auto 20px; width: 60px; height: 60px; border: 4px solid var(--border); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+          <h2 style="color: var(--text-main); margin-bottom: 10px; font-size: 24px;">Setting Up Tools</h2>
+          <p id="setupStatus" style="color: var(--muted); font-size: 16px;">Downloading required files...</p>
+          <div style="margin-top: 20px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;">
+            <div id="setupProgress" style="height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); width: 0%; transition: width 0.3s;"></div>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
+
+  <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 
   <script src="animations.js" defer></script>
   <script src="main.js" defer></script>
@@ -399,26 +418,29 @@
       {
         id: 1,
         title: "CreamInstaller",
-        description: "DLC",
+        description: "Automatically finds and manages Steam DLC for your games.",
         status: "available",
-        appId: "dlc_creaminstaller_001",
-        downloadUrl: "https://drive.usercontent.google.com/download?id=1OSOAImJH08nTJcr29NjqXofeX5FqxYTc&export=download&authuser=0&confirm=t&uuid=9f66697a-387a-497a-bbce-e9bc64d917b6&at=ALWLOp796DZUsftvnUKwkzCIXnP5%3A1765989995498"
+        appId: "dlc_cream_001",
+        toolFolder: "cream",
+        exeName: "CreamInstaller.exe"
       },
       {
         id: 2,
         title: "Online and DLC",
-        description: "Download and install the latest DLC tool for game management.",
+        description: "Auto SteamFix Tool for online features and DLC unlocking.",
         status: "available",
-        appId: "dlc_tool_v215",
-        downloadUrl: "https://github.com/acidicoala/SmokeAPI/releases/download/v4.0.0/SmokeAPI-v4.0.0.zip"
+        appId: "dlc_online_002",
+        toolFolder: "online",
+        exeName: "Auto SteamFix Tool.exe"
       },
       {
         id: 3,
         title: "Achievements",
-        description: "Steam Achievement Manager for unlocking game achievements.",
+        description: "Unlock and manage Steam game achievements.",
         status: "available",
-        appId: "dlc_achievements_003",
-        downloadUrl: "https://github.com/gibbed/SteamAchievementManager/releases/download/7.0.37/SteamAchievementManager-7.0.37.zip"
+        appId: "dlc_sam_003",
+        toolFolder: "sam",
+        exeName: "Crymson3.exe"
       }
     ];
 
@@ -438,8 +460,8 @@
           <h3 class="dlc-title">${dlc.title}</h3>
           <p class="dlc-description">${dlc.description}</p>
           <button class="dlc-button" ${dlc.status === 'installed' ? 'disabled' : ''} 
-                  onclick="downloadDlc('${dlc.appId}', '${dlc.title}', '${dlc.downloadUrl || ''}')">
-            ${dlc.status === 'installed' ? 'Already Installed' : 'Download DLC'}
+                  onclick="downloadDlc('${dlc.appId}', '${dlc.title}', '${dlc.toolFolder || ''}', '${dlc.exeName || ''}')">
+            ${dlc.status === 'installed' ? 'Already Installed' : 'Run'}
           </button>
         `;
         grid.appendChild(card);
@@ -447,15 +469,11 @@
     }
 
     // Download DLC function
-    function downloadDlc(appId, title, downloadUrl) {
+    function downloadDlc(appId, title, toolFolder, exeName) {
       if (window.chrome && window.chrome.webview) {
-        if (downloadUrl) {
-          window.chrome.webview.postMessage(`DOWNLOAD_DLC_URL:${appId}:${title}|${downloadUrl}`);
-        } else {
-          window.chrome.webview.postMessage(`DOWNLOAD_DLC:${appId}:${title}`);
-        }
+        window.chrome.webview.postMessage(`RUN_TOOL:${appId}:${title}:${toolFolder}:${exeName}`);
       } else {
-        alert(`Downloading DLC: ${title}`);
+        alert(`Running tool: ${title}`);
       }
     }
 
@@ -484,8 +502,55 @@
       }
     };
 
+    // First-time setup
+    function checkAndRunFirstTimeSetup() {
+      if (window.chrome && window.chrome.webview) {
+        window.chrome.webview.postMessage('CHECK_TOOLS_SETUP');
+      }
+    }
+    
+    // Handle setup status from C#
+    window.handleToolsSetupStatus = function(needsSetup) {
+      if (needsSetup) {
+        showSetupOverlay();
+        startToolsSetup();
+      }
+    };
+    
+    function showSetupOverlay() {
+      document.getElementById('setupOverlay').style.display = 'flex';
+    }
+    
+    function hideSetupOverlay() {
+      document.getElementById('setupOverlay').style.display = 'none';
+    }
+    
+    function updateSetupProgress(percent, message) {
+      document.getElementById('setupProgress').style.width = percent + '%';
+      document.getElementById('setupStatus').textContent = message;
+    }
+    
+    function startToolsSetup() {
+      updateSetupProgress(10, 'Downloading tools package...');
+      if (window.chrome && window.chrome.webview) {
+        window.chrome.webview.postMessage('START_TOOLS_SETUP');
+      }
+    }
+    
+    // Setup progress updates from C#
+    window.updateSetupProgress = function(percent, message) {
+      updateSetupProgress(percent, message);
+      if (percent >= 100) {
+        setTimeout(() => {
+          hideSetupOverlay();
+          populateDlcGrid(dlcData);
+        }, 1000);
+      }
+    };
+
     // Initialize page
     document.addEventListener('DOMContentLoaded', () => {
+      checkAndRunFirstTimeSetup();
       populateDlcGrid(dlcData);
       checkDLCInstallerStatus();
     });
