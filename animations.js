@@ -1,7 +1,4 @@
-/**
- * Crymson Animation System
- * Comprehensive animation controller for enhanced user experience
- */
+
 
 class CrymsonAnimations {
     constructor() {
@@ -24,7 +21,7 @@ class CrymsonAnimations {
         this.setupLoadingAnimations();
     }
 
-    // Intersection Observer for scroll animations
+    
     setupIntersectionObserver() {
         const observerOptions = {
             threshold: 0.1,
@@ -40,7 +37,7 @@ class CrymsonAnimations {
         }, observerOptions);
     }
 
-    // Particle System
+    
     initializeParticles() {
         this.createParticleContainer();
         this.generateBackgroundParticles();
@@ -125,7 +122,7 @@ class CrymsonAnimations {
         requestAnimationFrame(animate);
     }
 
-    // Scroll Animations
+    
     setupScrollAnimations() {
         document.querySelectorAll('.shell, .form-card, .nav-item, .btn').forEach(el => {
             this.scrollObserver.observe(el);
@@ -134,7 +131,7 @@ class CrymsonAnimations {
 
     animateElement(element) {
         element.style.animation = 'none';
-        element.offsetHeight; // Trigger reflow
+        element.offsetHeight; 
         element.style.animation = null;
         
         const animationType = this.getAnimationType(element);
@@ -153,7 +150,7 @@ class CrymsonAnimations {
         return 'fade-in';
     }
 
-    // Hover Effects
+    
     setupHoverEffects() {
         this.setupButtonHover();
         this.setupCardHover();
@@ -268,7 +265,7 @@ class CrymsonAnimations {
         setTimeout(() => indicator.remove(), 300);
     }
 
-    // Loading Animations
+    
     setupLoadingAnimations() {
         this.createLoadingSpinner();
         this.setupProgressAnimations();
@@ -360,7 +357,7 @@ class CrymsonAnimations {
         }
     }
 
-    // Page Transitions
+    
     pageTransition(direction = 'forward') {
         const overlay = document.createElement('div');
         overlay.className = 'page-transition-overlay';
@@ -393,7 +390,7 @@ class CrymsonAnimations {
         });
     }
 
-    // Micro-interactions
+    
     setupMicroInteractions() {
         this.setupCheckboxAnimations();
         this.setupToggleAnimations();
@@ -442,7 +439,7 @@ class CrymsonAnimations {
         });
     }
 
-    // Utility methods
+    
     debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -455,7 +452,7 @@ class CrymsonAnimations {
         };
     }
 
-    // Performance optimization
+    
     optimizeAnimations() {
         if ('requestIdleCallback' in window) {
             requestIdleCallback(() => {
@@ -471,12 +468,12 @@ class CrymsonAnimations {
     }
 }
 
-// Initialize animations when DOM is ready
+
 document.addEventListener('DOMContentLoaded', () => {
     window.crymsonAnimations = new CrymsonAnimations();
 });
 
-// Add CSS animations dynamically
+
 const animationCSS = `
 @keyframes float-particle {
     0% {
@@ -669,7 +666,7 @@ const animationCSS = `
 }
 `;
 
-// Inject CSS
+
 const styleSheet = document.createElement('style');
 styleSheet.textContent = animationCSS;
 document.head.appendChild(styleSheet);

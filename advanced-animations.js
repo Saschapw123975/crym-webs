@@ -1,4 +1,4 @@
-// Advanced Animation System for Crymson Login
+
 class AdvancedAnimationSystem {
     constructor() {
         this.animations = [];
@@ -25,7 +25,7 @@ class AdvancedAnimationSystem {
     }
 
     setupCanvas() {
-        // Create multiple canvas layers for different effects
+        
         const canvasContainer = document.createElement('div');
         canvasContainer.style.cssText = `
             position: fixed;
@@ -37,12 +37,12 @@ class AdvancedAnimationSystem {
             z-index: 1;
         `;
         
-        // Background effects canvas
+        
         this.bgCanvas = document.createElement('canvas');
         this.bgCanvas.style.cssText = 'position: absolute; width: 100%; height: 100%;';
         this.bgCtx = this.bgCanvas.getContext('2d');
         
-        // Foreground effects canvas
+        
         this.fgCanvas = document.createElement('canvas');
         this.fgCanvas.style.cssText = 'position: absolute; width: 100%; height: 100%;';
         this.fgCtx = this.fgCanvas.getContext('2d');
@@ -62,7 +62,7 @@ class AdvancedAnimationSystem {
         });
     }
 
-    // Floating 3D elements animation
+    
     initFloatingElements() {
         const count = 15;
         for (let i = 0; i < count; i++) {
@@ -82,12 +82,12 @@ class AdvancedAnimationSystem {
         }
     }
 
-    // Advanced mouse trail with particles
+    
     initMouseTrail() {
         let particleIndex = 0;
         document.addEventListener('mousemove', (e) => {
-            // Create particles with decreasing size order
-            const baseSize = 2 + (particleIndex % 5) * 0.5; // Size varies from 2 to 4px
+            
+            const baseSize = 2 + (particleIndex % 5) * 0.5; 
             
             this.mouseTrail.push({
                 x: e.clientX,
@@ -96,20 +96,20 @@ class AdvancedAnimationSystem {
                 life: 1,
                 vx: (Math.random() - 0.5) * 1,
                 vy: (Math.random() - 0.5) * 1,
-                color: `hsl(200, 100%, ${50 + Math.random() * 20}%)`, // Blue shades
+                color: `hsl(200, 100%, ${50 + Math.random() * 20}%)`, 
                 index: particleIndex
             });
             
             particleIndex++;
             
-            // Limit trail length
+            
             if (this.mouseTrail.length > 30) {
                 this.mouseTrail.shift();
             }
         });
     }
 
-    // Parallax background layers
+    
     initParallaxBackground() {
         for (let i = 0; i < 5; i++) {
             this.parallaxLayers.push({
@@ -118,7 +118,7 @@ class AdvancedAnimationSystem {
                 opacity: 0.1 + (i * 0.05)
             });
             
-            // Add shapes to each layer
+            
             for (let j = 0; j < 20; j++) {
                 this.parallaxLayers[i].shapes.push({
                     x: Math.random() * window.innerWidth,
@@ -130,7 +130,7 @@ class AdvancedAnimationSystem {
         }
     }
 
-    // Magnetic effect for interactive elements
+    
     initMagneticEffect() {
         document.querySelectorAll('.btn, .field, .card').forEach(element => {
             element.addEventListener('mouseenter', (e) => {
@@ -166,7 +166,7 @@ class AdvancedAnimationSystem {
     }
 
 
-    // Morphing geometric shapes
+    
     initMorphingShapes() {
         const shapeCount = 3;
         for (let i = 0; i < shapeCount; i++) {
@@ -199,9 +199,9 @@ class AdvancedAnimationSystem {
         return vertices;
     }
 
-    // Text animations
+    
     initTextAnimations() {
-        // Glitch effect for headings
+        
         document.querySelectorAll('h1, h2').forEach(heading => {
             heading.style.position = 'relative';
             heading.addEventListener('mouseenter', () => {
@@ -209,7 +209,7 @@ class AdvancedAnimationSystem {
             });
         });
         
-        // Wave animation for paragraphs
+        
         document.querySelectorAll('p').forEach(paragraph => {
             const text = paragraph.innerText;
             paragraph.innerHTML = '';
@@ -251,10 +251,10 @@ class AdvancedAnimationSystem {
         }
     }
 
-    // Enhanced button animations
+    
     initButtonAnimations() {
         document.querySelectorAll('button, .btn').forEach(button => {
-            // Ripple explosion on click
+            
             button.addEventListener('click', (e) => {
                 const rect = button.getBoundingClientRect();
                 const x = e.clientX - rect.left;
@@ -264,7 +264,7 @@ class AdvancedAnimationSystem {
                 this.createRippleExplosion(button, x, y);
             });
             
-            // Hover liquid effect
+            
             button.addEventListener('mouseenter', () => {
                 button.style.animation = 'liquid 0.5s ease-in-out';
             });
@@ -315,10 +315,10 @@ class AdvancedAnimationSystem {
         setTimeout(() => ripple.remove(), 1000);
     }
 
-    // Form field animations
+    
     initFormAnimations() {
         document.querySelectorAll('input, textarea').forEach(field => {
-            // Focus lightning border
+            
             field.addEventListener('focus', () => {
                 field.style.animation = 'electric-border 0.5s ease-in-out infinite';
                 this.createFieldAura(field);
@@ -328,7 +328,7 @@ class AdvancedAnimationSystem {
                 field.style.animation = '';
             });
             
-            // Typing effect
+            
             field.addEventListener('input', () => {
                 this.createTypingEffect(field);
             });
@@ -371,14 +371,14 @@ class AdvancedAnimationSystem {
         setTimeout(() => char.remove(), 1000);
     }
 
-    // Main animation loop
+    
     startMainLoop() {
         const animate = () => {
-            // Clear canvases
+            
             this.bgCtx.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
             this.fgCtx.clearRect(0, 0, this.fgCanvas.width, this.fgCanvas.height);
             
-            // Update and draw all effects
+            
             this.updateFloatingElements();
             this.updateMouseTrail();
             this.updateParallaxLayers();
@@ -393,18 +393,18 @@ class AdvancedAnimationSystem {
 
     updateFloatingElements() {
         this.floatingElements.forEach(element => {
-            // Update position
+            
             element.x += element.vx;
             element.y += element.vy;
             element.z += element.vz;
             element.rotation += element.rotationSpeed;
             
-            // Bounce off walls
+            
             if (element.x < 0 || element.x > window.innerWidth) element.vx *= -1;
             if (element.y < 0 || element.y > window.innerHeight) element.vy *= -1;
             if (element.z < 0 || element.z > 1000) element.vz *= -1;
             
-            // Draw 3D element
+            
             const scale = 1000 / (1000 + element.z);
             const size = element.size * scale;
             const x = element.x * scale + (window.innerWidth * (1 - scale)) / 2;
@@ -535,7 +535,7 @@ class AdvancedAnimationSystem {
         this.explosions.forEach(particle => {
             particle.x += particle.vx;
             particle.y += particle.vy;
-            particle.vy += 0.2; // gravity
+            particle.vy += 0.2; 
             particle.life -= 0.02;
             particle.size *= 0.98;
             
@@ -552,7 +552,7 @@ class AdvancedAnimationSystem {
     }
 }
 
-// CSS animations
+
 const animationStyles = `
 @keyframes wave {
     0%, 100% { transform: translateY(0); }
@@ -627,16 +627,16 @@ const animationStyles = `
 }
 `;
 
-// Add styles to document
+
 const styleElement = document.createElement('style');
 styleElement.textContent = animationStyles;
 document.head.appendChild(styleElement);
 
-// Initialize animation system
+
 let advancedAnimations;
 document.addEventListener('DOMContentLoaded', () => {
     advancedAnimations = new AdvancedAnimationSystem();
 });
 
-// Export for global use
+
 window.AdvancedAnimationSystem = AdvancedAnimationSystem;

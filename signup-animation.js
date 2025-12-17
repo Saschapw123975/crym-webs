@@ -1,5 +1,5 @@
 function openSignupAnimation() {
-    // Create full-screen overlay
+    
     const overlay = document.createElement('div');
     overlay.style.cssText = `
         position: fixed;
@@ -18,7 +18,7 @@ function openSignupAnimation() {
         color: #ffffff;
     `;
 
-    // Add fade-in animation
+    
     const style = document.createElement('style');
     style.textContent = `
         @keyframes fadeIn {
@@ -103,18 +103,18 @@ function openSignupAnimation() {
     `;
     document.head.appendChild(style);
 
-    // Create content
+    
     overlay.innerHTML = `
         <button class="close-button" onclick="closeSignupAnimation()">×</button>
         <h1 class="signup-title">Create Your Account</h1>
         <p class="signup-subtitle">Press sign up and make your account with your key to unlock premium features</p>
-        <a href="https://keyauth.cc/panel/c1r18/Testing+for+beta+rework" target="_blank" class="signup-button">Sign Up Now</a>
+        <a href="https:
     `;
 
-    // Add to page
+    
     document.body.appendChild(overlay);
 
-    // Make close function global
+    
     window.closeSignupAnimation = function() {
         overlay.style.animation = 'fadeIn 0.3s ease reverse';
         setTimeout(() => {
@@ -124,7 +124,7 @@ function openSignupAnimation() {
         }, 300);
     };
 
-    // Close on escape key
+    
     const handleEscape = (e) => {
         if (e.key === 'Escape') {
             window.closeSignupAnimation();
@@ -133,7 +133,7 @@ function openSignupAnimation() {
     };
     document.addEventListener('keydown', handleEscape);
 
-    // Close on background click
+    
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
             window.closeSignupAnimation();
